@@ -1,8 +1,10 @@
 ﻿using CyrusTask.DTOs.TaskItems;
+using CyrusTask.Extensions;
 using CyrusTask.Extensions.TaskItemDtos;
 using CyrusTask.Models;
 using CyrusTask.Repositories;
 using CyrusTask.Services.Tasks;
+using CyrusTask.Services.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,13 +15,13 @@ namespace CyrusTask.Controllers
     [ApiController]
     public class TasksController : ControllerBase
     {
-        private readonly IGenericRepository<TaskItem> _tasksRepo;
         private readonly ITaskService _taskService;
+        private readonly IUserService _userService;
 
-        public TasksController(IGenericRepository<TaskItem> tasksRepo, ITaskService taskService)
+        public TasksController(ITaskService taskService, IUserService userService)
         {
-            _tasksRepo = tasksRepo;
             _taskService = taskService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -41,12 +43,19 @@ namespace CyrusTask.Controllers
             return Ok(task);
         }
 
-        //[Authorize]
-        //[HttpPut("{id:int}/assign")]
-        //public Task<IActionResult> AssignTaskToUser(int id)
-        //{
+        [Authorize]
+        [HttpPut("{id:int}/assign")]
+        public async Task<IActionResult> AssignTaskToUser(int id)
+        {
+            var email = User.GetEmail();
 
-        //}
+            var userDto = await _userService.FindUserByEmailAsync(email);
+
+
+            var task = await _taskService.AssignTaskToUser(id, userDto.Id);
+
+            return Ok(task);
+        }
 
         [HttpPut("{id:int}/status")]
         public async Task<IActionResult> UpdateTaskStatus(int id, TaskItemCreateDto itemCreateDto)

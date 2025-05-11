@@ -31,6 +31,7 @@ namespace CyrusTask.Extensions.UserDtos
         {
             return new UserDto
             {
+                Id = user.Id,
                 FullName = user.FullName,
                 Email = user.Email,
                 PasswordHash = user.PasswordHash,

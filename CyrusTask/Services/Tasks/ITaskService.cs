@@ -15,6 +15,8 @@ namespace CyrusTask.Services.Tasks
 
         Task<TaskItemDto> UpdateTaskStatus(int id, TaskItemCreateDto itemCreateDto);
 
+        Task<TaskItemDto> AssignTaskToUser(int TaskId, int UserId);
+
         Task<bool> DeleteTask(TaskItem taskItem);
 
         bool isExist(int id);

@@ -2,6 +2,7 @@
 using CyrusTask.Models;
 using CyrusTask.Repositories;
 using CyrusTask.Services.Projects;
+using CyrusTask.Services.Tasks;
 using CyrusTask.Services.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,8 @@ namespace CyrusTask
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(IUserService), typeof(UserService));
             builder.Services.AddScoped(typeof(IProjectService), typeof(ProjectService));
+            builder.Services.AddScoped(typeof(ITaskService), typeof(TaskService));
+
 
             builder.Services.AddAuthentication(options =>
             {

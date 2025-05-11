@@ -58,5 +58,18 @@ namespace CyrusTask.Services.Tasks
         {
             return await _taskRepo.GetByIdAsync(id);
         }
+
+        public async Task<TaskItemDto> AssignTaskToUser(int TaskId, int UserId)
+        {
+            var task = await _taskRepo.GetByIdAsync(TaskId);
+
+            task.AssignedUserId = UserId;
+
+            _taskRepo.Update(task);
+
+            await _taskRepo.SaveChangesAsync();
+
+            return task.ToDTO();
+        }
     }
 }
