@@ -2,6 +2,7 @@
 using CyrusTask.Extensions.TaskItemDtos;
 using CyrusTask.Models;
 using CyrusTask.Repositories;
+using CyrusTask.Specifications;
 using System.Threading.Tasks;
 
 namespace CyrusTask.Services.Tasks
@@ -59,6 +60,8 @@ namespace CyrusTask.Services.Tasks
             return await _taskRepo.GetByIdAsync(id);
         }
 
+
+
         public async Task<TaskItemDto> AssignTaskToUser(int TaskId, int UserId)
         {
             var task = await _taskRepo.GetByIdAsync(TaskId);
@@ -70,6 +73,13 @@ namespace CyrusTask.Services.Tasks
             await _taskRepo.SaveChangesAsync();
 
             return task.ToDTO();
+        }
+
+        public async Task<IEnumerable<TaskItemDto>> FilterTasksByProjectAndUser(TaskSpecParams spec)
+        {
+            var tasks = await _taskRepo.GetAllWithExpresion(t => t.ProjectId == spec.ProjectId && t.AssignedUserId == spec.UserId);
+
+            return tasks.ToDtos();
         }
     }
 }

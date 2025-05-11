@@ -5,6 +5,7 @@ using CyrusTask.Models;
 using CyrusTask.Repositories;
 using CyrusTask.Services.Tasks;
 using CyrusTask.Services.Users;
+using CyrusTask.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,13 @@ namespace CyrusTask.Controllers
         {
             var tasks = await _taskService.GetAllProject();
 
+            return Ok(tasks);
+        }
+
+        [HttpGet("filter")]
+        public async Task<IActionResult> GetTaskInProjectAssignedToUser([FromQuery]TaskSpecParams spec)
+        {
+            var tasks = await _taskService.FilterTasksByProjectAndUser(spec);
             return Ok(tasks);
         }
 

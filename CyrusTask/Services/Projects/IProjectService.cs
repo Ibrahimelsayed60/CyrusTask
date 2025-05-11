@@ -6,7 +6,7 @@ namespace CyrusTask.Services.Projects
     {
         Task<IEnumerable<ProjectDto>> GetAllProject();
 
-        Task<ProjectDto> GetProjectById(int id);
+        Task<ProjectDto?> GetProjectById(int id);
 
         Task<ProjectDto> CreateProject(ProjectCreateDto project);
 

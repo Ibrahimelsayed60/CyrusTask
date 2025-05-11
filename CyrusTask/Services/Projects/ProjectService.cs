@@ -2,6 +2,7 @@
 using CyrusTask.Extensions.ProjectDtos;
 using CyrusTask.Models;
 using CyrusTask.Repositories;
+using CyrusTask.Specifications.ProjectSpecs;
 
 namespace CyrusTask.Services.Projects
 {
@@ -19,9 +20,10 @@ namespace CyrusTask.Services.Projects
             return (await _projectRepo.GetAllAsync()).ToDtos();
         }
 
-        public async Task<ProjectDto> GetProjectById(int id)
+        public async Task<ProjectDto?> GetProjectById(int id)
         {
-            return (await _projectRepo.GetByIdAsync(id)).ToDto();
+            var spec = new ProjectIncludeSpecifications(id);
+            return (await _projectRepo.GetWithSpecAsync(spec))?.ToDto();
         }
 
         public async Task<ProjectDto> CreateProject(ProjectCreateDto project)

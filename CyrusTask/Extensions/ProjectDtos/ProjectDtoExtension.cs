@@ -1,4 +1,6 @@
 ﻿using CyrusTask.DTOs.Projects;
+using CyrusTask.DTOs.TaskItems;
+using CyrusTask.Extensions.TaskItemDtos;
 using CyrusTask.Models;
 using System.Runtime.CompilerServices;
 
@@ -15,7 +17,7 @@ namespace CyrusTask.Extensions.ProjectDtos
                 Description = project.Description,
                 StartDate = project.StartDate,
                 EndDate = project.EndDate,
-                Tasks = project.Tasks,
+                Tasks = (List<TaskItemDto>)project.Tasks?.AsQueryable().ToDtos(),
             };
         }
 

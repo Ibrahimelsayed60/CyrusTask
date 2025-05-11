@@ -1,5 +1,6 @@
 ﻿
 using CyrusTask.Models;
+using CyrusTask.Specifications;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -55,6 +56,26 @@ namespace CyrusTask.Repositories
         public async Task<T> First(Expression<Func<T, bool>> predicate)
         {
             return await (await GetAllAsync()).Where(predicate).FirstOrDefaultAsync();
+        }
+
+        private IQueryable<T> ApplySpecifications(ISpecifications<T> spec)
+        {
+            return SpecificationsEvaluator<T>.GetQuery(_pMContext.Set<T>(), spec);
+        }
+
+        public async Task<T?> GetWithSpecAsync(ISpecifications<T> spec)
+        {
+            return await ApplySpecifications(spec).FirstOrDefaultAsync();
+        }
+
+        public async Task<int> GetCountAsync(ISpecifications<T> spec)
+        {
+            return await ApplySpecifications(spec).CountAsync();
+        }
+
+        public async Task<IQueryable<T>> GetAllWithExpresion(Expression<Func<T, bool>> predicate)
+        {
+            return (await GetAllAsync()).Where(predicate);
         }
     }
 }

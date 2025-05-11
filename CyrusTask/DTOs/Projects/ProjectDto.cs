@@ -1,4 +1,5 @@
-﻿using CyrusTask.Models;
+﻿using CyrusTask.DTOs.TaskItems;
+using CyrusTask.Models;
 
 namespace CyrusTask.DTOs.Projects
 {
@@ -9,7 +10,7 @@ namespace CyrusTask.DTOs.Projects
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
-        public List<TaskItem>? Tasks { get; set; }
+        public List<TaskItemDto>? Tasks { get; set; }
 
     }
 }
