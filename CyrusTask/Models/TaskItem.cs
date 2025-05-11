@@ -1,6 +1,6 @@
 ﻿namespace CyrusTask.Models
 {
-    public class TaskItem
+    public class TaskItem : BaseEntity
     {
         public string Title { get; set; }
         public string Description { get; set; }

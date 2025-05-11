@@ -1,4 +1,8 @@
 
+using CyrusTask.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+
 namespace CyrusTask
 {
     public class Program
@@ -13,6 +17,14 @@ namespace CyrusTask
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<ProjectManagementContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+                .LogTo(log => Debug.WriteLine(log), LogLevel.Information)
+                .EnableSensitiveDataLogging();
+            });
+
 
             var app = builder.Build();
 
