@@ -14,6 +14,8 @@ namespace CyrusTask.Repositories
 
         void Delete(T entity);
 
+        bool Exists(int id);
+
         Task SaveChangesAsync();
 
     }

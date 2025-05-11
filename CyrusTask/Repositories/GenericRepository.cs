@@ -40,11 +40,17 @@ namespace CyrusTask.Repositories
             entity.IsDeleted = true;
             Update(entity);
         }
-        
+
+        public bool Exists(int id)
+        {
+            return _pMContext.Set<T>().Where(x => !x.IsDeleted).Any(x => x.Id == id);
+        }
+
         public async Task SaveChangesAsync()
         {
             await _pMContext.SaveChangesAsync();
         }
 
+        
     }
 }

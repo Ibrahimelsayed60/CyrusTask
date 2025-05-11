@@ -1,5 +1,6 @@
 
 using CyrusTask.Models;
+using CyrusTask.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
@@ -24,6 +25,8 @@ namespace CyrusTask
                 .LogTo(log => Debug.WriteLine(log), LogLevel.Information)
                 .EnableSensitiveDataLogging();
             });
+
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 
             var app = builder.Build();
