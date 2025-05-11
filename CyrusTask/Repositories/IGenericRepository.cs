@@ -1,4 +1,5 @@
 ﻿using CyrusTask.Models;
+using System.Linq.Expressions;
 
 namespace CyrusTask.Repositories
 {
@@ -9,6 +10,8 @@ namespace CyrusTask.Repositories
         Task<T?> GetByIdAsync(int id);
 
         Task<T> AddAsync(T entity);
+
+        Task<T> First(Expression<Func<T, bool>> predicate);
 
         void Update(T entity);
 

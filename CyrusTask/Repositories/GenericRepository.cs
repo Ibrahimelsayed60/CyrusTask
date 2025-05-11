@@ -1,6 +1,7 @@
 ﻿
 using CyrusTask.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace CyrusTask.Repositories
 {
@@ -51,6 +52,9 @@ namespace CyrusTask.Repositories
             await _pMContext.SaveChangesAsync();
         }
 
-        
+        public async Task<T> First(Expression<Func<T, bool>> predicate)
+        {
+            return await (await GetAllAsync()).Where(predicate).FirstOrDefaultAsync();
+        }
     }
 }
