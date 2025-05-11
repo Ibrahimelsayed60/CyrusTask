@@ -2,6 +2,7 @@
 using CyrusTask.Extensions.TaskItemDtos;
 using CyrusTask.Models;
 using CyrusTask.Repositories;
+using CyrusTask.Services.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,16 +14,18 @@ namespace CyrusTask.Controllers
     public class TasksController : ControllerBase
     {
         private readonly IGenericRepository<TaskItem> _tasksRepo;
+        private readonly ITaskService _taskService;
 
-        public TasksController(IGenericRepository<TaskItem> tasksRepo)
+        public TasksController(IGenericRepository<TaskItem> tasksRepo, ITaskService taskService)
         {
             _tasksRepo = tasksRepo;
+            _taskService = taskService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllTasks()
         {
-            var tasks = (await _tasksRepo.GetAllAsync()).ToDtos();
+            var tasks = await _taskService.GetAllProject();
 
             return Ok(tasks);
         }
@@ -33,9 +36,7 @@ namespace CyrusTask.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var task = await _tasksRepo.AddAsync(taskCreateDto.ToModel());
-
-            await _tasksRepo.SaveChangesAsync();
+            var task = await _taskService.CreateTask(taskCreateDto);
 
             return Ok(task);
         }
@@ -50,21 +51,26 @@ namespace CyrusTask.Controllers
         [HttpPut("{id:int}/status")]
         public async Task<IActionResult> UpdateTaskStatus(int id, TaskItemCreateDto itemCreateDto)
         {
-            var taskUpdated = itemCreateDto.ToModel();
-            taskUpdated.Id = id;
+            bool isExist = _taskService.isExist(id);
 
-            _tasksRepo.Update(taskUpdated);
-            await _tasksRepo.SaveChangesAsync();
-            return Ok(taskUpdated.ToDTO());
+            if (!isExist)
+            {
+                return BadRequest("This Task not found");
+            }
+
+            var taskUpdatedDto = await _taskService.UpdateTaskStatus(id, itemCreateDto);
+            return Ok(taskUpdatedDto);
         }
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteTask(int id)
         {
-            var task= await _tasksRepo.GetByIdAsync(id);
+            var task= await _taskService.GetProjectById(id);
 
-            _tasksRepo.Delete(task);
-            await _tasksRepo.SaveChangesAsync();
+            if (task is null)
+                return BadRequest("This task not found");
+
+            await _taskService.DeleteTask(task);
             return Ok();
 
         }
