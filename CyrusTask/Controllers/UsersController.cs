@@ -20,14 +20,14 @@ namespace CyrusTask.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(UserDto userDto)
+        public async Task<IActionResult> Register(RegisterDto registerDto)
         {
-            var user = await _userService.FindUserByEmailAsync(userDto.Email);
+            var userDto = await _userService.FindUserByEmailAsync(registerDto.Email);
 
-            if (user is not null)
+            if (userDto is not null)
                 return BadRequest("THis Email is already exist");
 
-            var userAddedDto = await _userService.CreateUserAsync(user);
+            var userAddedDto = await _userService.CreateUserAsync(userDto);
 
             userAddedDto.Token = _userService.CreateToken(userAddedDto.ToModel());
 
@@ -43,11 +43,11 @@ namespace CyrusTask.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(UserDto loginDto)
+        public async Task<IActionResult> Login(LoginDto loginDto)
         {
             var user = await _userService.FindUserByEmailAsync(loginDto.Email);
 
-            if (user is null || !await _userService.CheckUserPasswordAsync(user, loginDto.PasswordHash))
+            if (user is null || !await _userService.CheckUserPasswordAsync(user, loginDto.Password))
             {
                 return BadRequest ("Email or Password is incorrect");
             }
