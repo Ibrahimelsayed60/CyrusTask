@@ -8,9 +8,9 @@ namespace CyrusTask.Services.Users
     {
         Task<IEnumerable<UserDto>> GetUsers();
 
-        Task<UserDto> CreateUserAsync(UserDto registerDTO);
+        Task<UserDto> CreateUserAsync(RegisterDto registerDTO);
         Task UpdateUserAsync(UserDto userDTO);
-        Task<UserDto> FindUserByEmailAsync(string email);
+        Task<UserDto?> FindUserByEmailAsync(string email);
 
         Task<bool> CheckUserPasswordAsync(UserDto user, string password);
 

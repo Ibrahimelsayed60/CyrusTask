@@ -27,7 +27,7 @@ namespace CyrusTask.Controllers
             if (userDto is not null)
                 return BadRequest("THis Email is already exist");
 
-            var userAddedDto = await _userService.CreateUserAsync(userDto);
+            var userAddedDto = await _userService.CreateUserAsync(registerDto);
 
             userAddedDto.Token = _userService.CreateToken(userAddedDto.ToModel());
 

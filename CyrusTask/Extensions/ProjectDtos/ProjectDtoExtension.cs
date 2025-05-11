@@ -24,5 +24,17 @@ namespace CyrusTask.Extensions.ProjectDtos
             return projects.Select(project => ToDto(project)).ToList();
         }
 
+        public static Project ToModel(this ProjectDto projectDto)
+        {
+            return new Project
+            {
+                Name = projectDto.Name,
+                Description = projectDto.Description,
+                StartDate = projectDto.StartDate,
+                EndDate = projectDto.EndDate,
+
+            };
+        }
+
     }
 }

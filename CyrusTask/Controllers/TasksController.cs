@@ -2,6 +2,7 @@
 using CyrusTask.Extensions.TaskItemDtos;
 using CyrusTask.Models;
 using CyrusTask.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,6 +40,7 @@ namespace CyrusTask.Controllers
             return Ok(task);
         }
 
+        //[Authorize]
         //[HttpPut("{id:int}/assign")]
         //public Task<IActionResult> AssignTaskToUser(int id)
         //{

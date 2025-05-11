@@ -20,10 +20,10 @@ namespace CyrusTask.Services.Users
             _config = config;
         }
 
-        public async Task<UserDto> CreateUserAsync(UserDto registerDTO)
+        public async Task<UserDto> CreateUserAsync(RegisterDto registerDTO)
         {
-            var user = registerDTO.ToModel();
-            user.PasswordHash = CreatePasswordHash(registerDTO.PasswordHash);
+            var user = registerDTO.ToRegisterModel();
+            user.PasswordHash = CreatePasswordHash(registerDTO.Password);
 
             await _userRepo.AddAsync(user);
             await _userRepo.SaveChangesAsync();
@@ -48,9 +48,12 @@ namespace CyrusTask.Services.Users
 
         
 
-        public async Task<UserDto> FindUserByEmailAsync(string email)
+        public async Task<UserDto?> FindUserByEmailAsync(string email)
         {
             var user = await _userRepo.First(u => u.Email == email);
+            if (user == null) 
+                return null;
+
             var userDTO = user.ToDTO();
 
             return userDTO;

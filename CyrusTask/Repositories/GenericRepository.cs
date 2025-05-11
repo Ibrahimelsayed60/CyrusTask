@@ -47,9 +47,9 @@ namespace CyrusTask.Repositories
             return _pMContext.Set<T>().Where(x => !x.IsDeleted).Any(x => x.Id == id);
         }
 
-        public async Task SaveChangesAsync()
+        public async Task<int> SaveChangesAsync()
         {
-            await _pMContext.SaveChangesAsync();
+            return await _pMContext.SaveChangesAsync();
         }
 
         public async Task<T> First(Expression<Func<T, bool>> predicate)

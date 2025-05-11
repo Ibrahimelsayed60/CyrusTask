@@ -2,6 +2,7 @@
 using CyrusTask.Extensions.ProjectDtos;
 using CyrusTask.Models;
 using CyrusTask.Repositories;
+using CyrusTask.Services.Projects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,17 +12,18 @@ namespace CyrusTask.Controllers
     [ApiController]
     public class ProjectsController : ControllerBase
     {
-        private readonly IGenericRepository<Project> _projectRepo;
+        private readonly IProjectService _projectService;
 
-        public ProjectsController(IGenericRepository<Project> projectRepo)
+        public ProjectsController(IProjectService projectService)
         {
-            _projectRepo = projectRepo;
+            
+            _projectService = projectService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllProjects()
         {
-            var projects= (await _projectRepo.GetAllAsync()).ToDtos();
+            var projects= await _projectService.GetAllProject();
 
             return Ok(projects);
         }
@@ -29,7 +31,7 @@ namespace CyrusTask.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetProjectById(int id)
         {
-            var project = (await _projectRepo.GetByIdAsync(id)).ToDto();
+            var project = await _projectService.GetProjectById(id);
 
             return Ok(project);
         }
@@ -42,26 +44,20 @@ namespace CyrusTask.Controllers
 
             
 
-            var projectCreated =await _projectRepo.AddAsync(projectCreateDto.ToModel());
-            await _projectRepo.SaveChangesAsync();
+            var projectCreated =await _projectService.CreateProject(projectCreateDto);
             return Ok(projectCreated);
         }
 
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateProject(int id, ProjectCreateDto projectCreateDto)
         {
-            bool isExisted = _projectRepo.Exists(id);
+            bool isExisted = _projectService.isExist(id);
             if (!isExisted)
             {
                 return BadRequest("Project no found");
             }
 
-            var project = projectCreateDto.ToModel();
-            project.Id = id ;
-
-            _projectRepo.Update(project);
-
-            await _projectRepo.SaveChangesAsync();
+            var project = await _projectService.UpdateProject(id, projectCreateDto);
 
             return Ok(project);
 
@@ -70,13 +66,14 @@ namespace CyrusTask.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteProject(int id)
         {
-            var project = await _projectRepo.GetByIdAsync(id);
+            var project = await _projectService.GetProjectById(id);
 
-            _projectRepo.Delete(project);
+            bool isDeleted = await _projectService.DeleteProject(project);
 
-            await _projectRepo.SaveChangesAsync();
-
-            return Ok();
+            return Ok(new
+            {
+                isDeleted = isDeleted
+            });
         }
 
     }

@@ -17,6 +17,16 @@ namespace CyrusTask.Extensions.UserDtos
             };
         }
 
+        public static User ToRegisterModel(this RegisterDto registerDto)
+        {
+            return new User
+            {
+                Email = registerDto.Email,
+                PasswordHash = registerDto.Password,
+                FullName = registerDto.FullName,
+            };
+        }
+
         public static UserDto ToDTO(this User user)
         {
             return new UserDto

@@ -19,7 +19,7 @@ namespace CyrusTask.Repositories
 
         bool Exists(int id);
 
-        Task SaveChangesAsync();
+        Task<int> SaveChangesAsync();
 
     }
 }
