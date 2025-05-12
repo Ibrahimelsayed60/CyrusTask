@@ -1,10 +1,13 @@
 ﻿using CyrusTask.DTOs.Projects;
 using CyrusTask.Extensions.ProjectDtos;
+using CyrusTask.Helpers;
 using CyrusTask.Models;
 using CyrusTask.Repositories;
 using CyrusTask.Services.Projects;
+using CyrusTask.Specifications.ProjectSpecs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CyrusTask.Controllers
 {
@@ -21,11 +24,13 @@ namespace CyrusTask.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProjects()
+        public async Task<IActionResult> GetAllProjects([FromQuery] ProjectSpecParams specParams)
         {
-            var projects= await _projectService.GetAllProject();
+            var projects= await _projectService.GetAllProject(specParams);
 
-            return Ok(projects);
+            var count = await _projectService.GetCountAsync(specParams);
+
+            return Ok(new Pagination<ProjectDto>(specParams.PageIndex, specParams.PageSize, count, projects));
         }
 
         [HttpGet("{id:int}")]

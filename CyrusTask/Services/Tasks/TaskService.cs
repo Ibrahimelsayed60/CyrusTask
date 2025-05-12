@@ -2,7 +2,7 @@
 using CyrusTask.Extensions.TaskItemDtos;
 using CyrusTask.Models;
 using CyrusTask.Repositories;
-using CyrusTask.Specifications;
+using CyrusTask.Specifications.TaskSpecs;
 using System.Threading.Tasks;
 
 namespace CyrusTask.Services.Tasks
@@ -66,7 +66,14 @@ namespace CyrusTask.Services.Tasks
         {
             var task = await _taskRepo.GetByIdAsync(TaskId);
 
-            task.AssignedUserId = UserId;
+            if(task.AssignedUserId is null)
+            {
+                task.AssignedUserId = UserId;
+            }
+            else
+            {
+                task.AssignedUserId = null;
+            }
 
             _taskRepo.Update(task);
 

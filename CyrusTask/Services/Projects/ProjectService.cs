@@ -15,9 +15,13 @@ namespace CyrusTask.Services.Projects
             _projectRepo = projectRepo;
         }
 
-        public async Task<IEnumerable<ProjectDto>> GetAllProject()
+        public async Task<IEnumerable<ProjectDto>> GetAllProject(ProjectSpecParams projectSpecs)
         {
-            return (await _projectRepo.GetAllAsync()).ToDtos();
+            var spec = new ProjectWIthPaginationSpecifications(projectSpecs);
+
+            return _projectRepo.GetAllWithSpec(spec).ToDtos();
+
+            //return (await _projectRepo.GetAllAsync()).ToDtos();
         }
 
         public async Task<ProjectDto?> GetProjectById(int id)
@@ -56,6 +60,12 @@ namespace CyrusTask.Services.Projects
         public bool isExist(int id)
         {
             return _projectRepo.Exists(id);
+        }
+
+        public async Task<int> GetCountAsync(ProjectSpecParams specParams)
+        {
+            var spec = new ProjectForCountSpecification();
+            return await  _projectRepo.GetCountAsync(spec);
         }
     }
 }

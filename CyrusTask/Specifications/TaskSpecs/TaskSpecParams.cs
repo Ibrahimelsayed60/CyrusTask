@@ -1,4 +1,4 @@
-﻿namespace CyrusTask.Specifications
+﻿namespace CyrusTask.Specifications.TaskSpecs
 {
     public class TaskSpecParams
     {

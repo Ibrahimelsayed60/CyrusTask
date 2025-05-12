@@ -8,6 +8,8 @@ namespace CyrusTask.Repositories
     {
         Task<IQueryable<T>> GetAllAsync();
 
+        IQueryable<T> GetAllWithSpec(ISpecifications<T> spec);
+
         Task<T?> GetByIdAsync(int id);
 
         Task<T?> GetWithSpecAsync(ISpecifications<T> spec);

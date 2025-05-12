@@ -5,7 +5,7 @@ using CyrusTask.Models;
 using CyrusTask.Repositories;
 using CyrusTask.Services.Tasks;
 using CyrusTask.Services.Users;
-using CyrusTask.Specifications;
+using CyrusTask.Specifications.TaskSpecs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

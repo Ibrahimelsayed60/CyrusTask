@@ -1,7 +1,7 @@
 ﻿using CyrusTask.DTOs.Projects;
 using CyrusTask.DTOs.TaskItems;
 using CyrusTask.Models;
-using CyrusTask.Specifications;
+using CyrusTask.Specifications.TaskSpecs;
 
 namespace CyrusTask.Services.Tasks
 {

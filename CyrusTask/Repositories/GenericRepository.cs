@@ -77,5 +77,10 @@ namespace CyrusTask.Repositories
         {
             return (await GetAllAsync()).Where(predicate);
         }
+
+        public IQueryable<T> GetAllWithSpec(ISpecifications<T> spec)
+        {
+            return ApplySpecifications(spec);
+        }
     }
 }
