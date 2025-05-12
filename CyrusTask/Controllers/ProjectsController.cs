@@ -24,7 +24,7 @@ namespace CyrusTask.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProjects([FromQuery] ProjectSpecParams specParams)
+        public async Task<ActionResult<Pagination<ProjectDto>>> GetAllProjects([FromQuery] ProjectSpecParams specParams)
         {
 
             // Validate specParams
@@ -47,7 +47,7 @@ namespace CyrusTask.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetProjectById(int id)
+        public async Task<ActionResult<ProjectDto>> GetProjectById(int id)
         {
 
             if (id <= 0)
@@ -69,7 +69,7 @@ namespace CyrusTask.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProject([FromBody] ProjectCreateDto projectCreateDto)
+        public async Task<ActionResult<ProjectDto>> CreateProject([FromBody] ProjectCreateDto projectCreateDto)
         {
 
             if (projectCreateDto == null)
@@ -94,7 +94,7 @@ namespace CyrusTask.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateProject(int id, [FromBody] ProjectCreateDto projectCreateDto)
+        public async Task<ActionResult<ProjectDto>> UpdateProject(int id, [FromBody] ProjectCreateDto projectCreateDto)
         {
             if (id <= 0)
                 return BadRequest("Invalid project ID.");
