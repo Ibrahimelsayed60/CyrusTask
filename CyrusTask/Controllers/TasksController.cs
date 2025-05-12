@@ -29,7 +29,7 @@ namespace CyrusTask.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetTaskInProjectAssignedToUser([FromQuery]TaskSpecParams spec)
+        public async Task<ActionResult<Pagination<TaskItemDto>>> GetTaskInProjectAssignedToUser([FromQuery]TaskSpecParams spec)
         {
             if (spec == null)
             {
@@ -57,7 +57,7 @@ namespace CyrusTask.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTask([FromBody] TaskItemCreateDto taskCreateDto)
+        public async Task<ActionResult<TaskItemDto>> CreateTask([FromBody] TaskItemCreateDto taskCreateDto)
         {
             if (taskCreateDto == null)
             {
@@ -89,7 +89,7 @@ namespace CyrusTask.Controllers
 
         [Authorize]
         [HttpPut("{id:int}/assign")]
-        public async Task<IActionResult> AssignTaskToUser(int id)
+        public async Task<ActionResult<TaskItemDto>> AssignTaskToUser(int id)
         {
             try
             {
@@ -123,7 +123,7 @@ namespace CyrusTask.Controllers
         }
 
         [HttpPut("{id:int}/status")]
-        public async Task<IActionResult> UpdateTaskStatus(int id, [FromBody] TaskStatusParam taskStatusParam)
+        public async Task<ActionResult<TaskItemDto>> UpdateTaskStatus(int id, [FromBody] TaskStatusParam taskStatusParam)
         {
             if (taskStatusParam == null)
             {
@@ -165,7 +165,7 @@ namespace CyrusTask.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteTask(int id)
+        public async Task<ActionResult<string>> DeleteTask(int id)
         {
             try
             {
@@ -193,7 +193,7 @@ namespace CyrusTask.Controllers
         }
 
         [HttpDelete("{id:int}/hard")]
-        public async Task<IActionResult> DeleteHardTask(int id)
+        public async Task<ActionResult<string>> DeleteHardTask(int id)
         {
             try
             {
