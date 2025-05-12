@@ -33,10 +33,11 @@ namespace CyrusTask.Services.Tasks
             return task.ToDTO();
         }
 
-        public async Task<TaskItemDto> UpdateTaskStatus(int id, TaskItemCreateDto itemCreateDto)
+        public async Task<TaskItemDto> UpdateTaskStatus(int id, string UpdatedStatus)
         {
-            var taskUpdated = itemCreateDto.ToModel();
-            taskUpdated.Id = id;
+            var taskUpdated = await _taskRepo.GetByIdAsync(id);
+
+            taskUpdated.Status = (Models.TaskStatus)Enum.Parse(typeof(Models.TaskStatus), UpdatedStatus);
 
             _taskRepo.Update(taskUpdated);
             await _taskRepo.SaveChangesAsync();

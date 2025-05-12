@@ -70,7 +70,11 @@ namespace CyrusTask.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
-            return Ok( await _userService.GetUsers());
+            return Ok((await _userService.GetUsers()).Select(u => new
+            {
+                fullName = u.FullName,
+                email = u.Email
+            }));
         }
 
     }

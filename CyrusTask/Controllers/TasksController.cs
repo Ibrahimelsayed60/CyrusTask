@@ -27,23 +27,6 @@ namespace CyrusTask.Controllers
             _userService = userService;
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetAllTasks()
-        //{
-        //    try
-        //    {
-        //        var tasks = await _taskService.GetAllTasks();
-
-        //        if (tasks == null || !tasks.Any())
-        //            return NoContent();
-
-        //        return Ok(tasks);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, "An error occurred while retrieving tasks.");
-        //    }
-        //}
 
         [HttpGet]
         public async Task<IActionResult> GetTaskInProjectAssignedToUser([FromQuery]TaskSpecParams spec)
@@ -140,9 +123,9 @@ namespace CyrusTask.Controllers
         }
 
         [HttpPut("{id:int}/status")]
-        public async Task<IActionResult> UpdateTaskStatus(int id, [FromBody] TaskItemCreateDto itemCreateDto)
+        public async Task<IActionResult> UpdateTaskStatus(int id, [FromBody] TaskStatusParam taskStatusParam)
         {
-            if (itemCreateDto == null)
+            if (taskStatusParam == null)
             {
                 return BadRequest("Task data is required.");
             }
@@ -161,12 +144,12 @@ namespace CyrusTask.Controllers
                     return BadRequest("This Task not found");
                 }
 
-                if (!Enum.TryParse(typeof(Models.TaskStatus), itemCreateDto.Status, ignoreCase: true, out var status))
+                if (!Enum.TryParse(typeof(Models.TaskStatus), taskStatusParam.UpdatedStatus, ignoreCase: true, out var status))
                 {
                     return BadRequest($"Invalid status. Allowed values are: {string.Join(", ", Enum.GetNames(typeof(Models.TaskStatus)))}");
                 }
 
-                var taskUpdatedDto = await _taskService.UpdateTaskStatus(id, itemCreateDto);
+                var taskUpdatedDto = await _taskService.UpdateTaskStatus(id, taskStatusParam.UpdatedStatus);
 
                 if (taskUpdatedDto == null)
                 {

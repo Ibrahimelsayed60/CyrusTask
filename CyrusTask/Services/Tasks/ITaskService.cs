@@ -17,7 +17,7 @@ namespace CyrusTask.Services.Tasks
 
         Task<TaskItemDto> CreateTask(TaskItemCreateDto taskCreateDto);
 
-        Task<TaskItemDto> UpdateTaskStatus(int id, TaskItemCreateDto itemCreateDto);
+        Task<TaskItemDto> UpdateTaskStatus(int id, string UpdatedStatus);
 
         Task<TaskItemDto> AssignTaskToUser(int TaskId, int UserId);
 
