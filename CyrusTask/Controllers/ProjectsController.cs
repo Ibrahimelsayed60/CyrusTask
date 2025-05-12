@@ -133,7 +133,7 @@ namespace CyrusTask.Controllers
 
             try
             {
-                var project = await _projectService.GetProjectById(id);
+                var project = await _projectService.GetProjectByIdTracked(id);
 
                 if (project == null)
                     return NotFound("Project not found.");
@@ -150,7 +150,37 @@ namespace CyrusTask.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while deleting the project.");
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpDelete("{id:int}/hard")]
+        public async Task<IActionResult> DeleteHardProject(int id)
+        {
+
+            if (id <= 0)
+                return BadRequest("Invalid project ID.");
+
+            try
+            {
+                var project = (await _projectService.GetProjectByIdTracked(id));
+
+                if (project == null)
+                    return NotFound("Project not found.");
+
+                bool isDeleted = await _projectService.HardDeleteProject(project);
+
+                if (!isDeleted)
+                    return StatusCode(500, "Failed to delete the project.");
+
+                return Ok(new
+                {
+                    isDeleted = isDeleted
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
             }
         }
 

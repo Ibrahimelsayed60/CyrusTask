@@ -55,6 +55,12 @@ namespace CyrusTask.Services.Tasks
             return await _taskRepo.SaveChangesAsync() > 0;
         }
 
+        public async Task<bool> DeleteHardTask(TaskItem taskItem)
+        {
+            _taskRepo.HardDelete(taskItem);
+            return await _taskRepo.SaveChangesAsync() > 0;
+        }
+
         public async Task<TaskItem?> GetProjectById(int id)
         {
             return await _taskRepo.GetByIdAsync(id);
@@ -94,6 +100,11 @@ namespace CyrusTask.Services.Tasks
             var spec = new TaskForCountSpecification(specParams);
 
             return await _taskRepo.GetCountAsync(spec);
+        }
+
+        public async Task<IEnumerable<TaskItem>> GetTasksForSpecificProject(int projectId)
+        {
+            return (await _taskRepo.GetAllAsync()).Where(t => t.ProjectId == projectId).ToList();
         }
     }
 }

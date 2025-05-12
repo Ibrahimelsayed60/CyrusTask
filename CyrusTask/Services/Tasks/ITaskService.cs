@@ -11,6 +11,8 @@ namespace CyrusTask.Services.Tasks
 
         Task<IEnumerable<TaskItemDto>> GetAllTasks();
 
+        Task<IEnumerable<TaskItem>> GetTasksForSpecificProject(int projectId);
+
         Task<TaskItem?> GetProjectById(int id);
 
         Task<TaskItemDto> CreateTask(TaskItemCreateDto taskCreateDto);
@@ -24,6 +26,8 @@ namespace CyrusTask.Services.Tasks
         Task<int> GetCountAsync(TaskSpecParams specParams);
 
         Task<bool> DeleteTask(TaskItem taskItem);
+
+        Task<bool> DeleteHardTask(TaskItem taskItem);
 
         bool isExist(int id);
 

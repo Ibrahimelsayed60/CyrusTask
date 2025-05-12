@@ -1,4 +1,5 @@
 ﻿using CyrusTask.DTOs.Projects;
+using CyrusTask.Models;
 using CyrusTask.Specifications.ProjectSpecs;
 
 namespace CyrusTask.Services.Projects
@@ -11,11 +12,15 @@ namespace CyrusTask.Services.Projects
 
         Task<ProjectDto?> GetProjectById(int id);
 
+        Task<Project?> GetProjectByIdTracked(int id);
+
         Task<ProjectDto> CreateProject(ProjectCreateDto project);
 
         Task<ProjectDto> UpdateProject(int id, ProjectCreateDto projectCreateDto);
 
-        Task<bool> DeleteProject(ProjectDto projectDto);
+        Task<bool> DeleteProject(Project projectDto);
+
+        Task<bool> HardDeleteProject(Project project);
 
         bool isExist(int id);
     }

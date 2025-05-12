@@ -85,7 +85,7 @@ namespace CyrusTask.Repositories
 
         public void HardDelete(T entity)
         {
-            throw new NotImplementedException();
+            _pMContext.Remove(entity);
         }
     }
 }

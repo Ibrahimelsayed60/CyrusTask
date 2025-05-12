@@ -13,6 +13,7 @@ namespace CyrusTask.Extensions.ProjectDtos
         {
             return new ProjectDto
             {
+                Id = project.Id,
                 Name = project.Name,
                 Description = project.Description,
                 StartDate = project.StartDate,
@@ -30,6 +31,7 @@ namespace CyrusTask.Extensions.ProjectDtos
         {
             return new Project
             {
+                Id = projectDto.Id,
                 Name = projectDto.Name,
                 Description = projectDto.Description,
                 StartDate = projectDto.StartDate,

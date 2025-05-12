@@ -2,6 +2,7 @@
 using CyrusTask.Extensions.ProjectDtos;
 using CyrusTask.Models;
 using CyrusTask.Repositories;
+using CyrusTask.Services.Tasks;
 using CyrusTask.Specifications.ProjectSpecs;
 
 namespace CyrusTask.Services.Projects
@@ -9,10 +10,12 @@ namespace CyrusTask.Services.Projects
     public class ProjectService : IProjectService
     {
         private readonly IGenericRepository<Project> _projectRepo;
+        private readonly ITaskService _taskService;
 
-        public ProjectService(IGenericRepository<Project> projectRepo)
+        public ProjectService(IGenericRepository<Project> projectRepo, ITaskService taskService)
         {
             _projectRepo = projectRepo;
+            _taskService = taskService;
         }
 
         public async Task<IEnumerable<ProjectDto>> GetAllProject(ProjectSpecParams projectSpecs)
@@ -50,9 +53,24 @@ namespace CyrusTask.Services.Projects
             return project.ToDto();
         }
 
-        public async Task<bool> DeleteProject(ProjectDto project)
+        public async Task<bool> DeleteProject(Project project)
         {
-            _projectRepo.Delete(project.ToModel());
+
+            var tasks = await _taskService.GetTasksForSpecificProject(project.Id);
+
+            foreach(var task in tasks)
+            {
+                await _taskService.DeleteTask(task);
+            }
+
+            _projectRepo.Delete(project);
+
+            return await _projectRepo.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> HardDeleteProject(ProjectDto projectDto)
+        {
+            _projectRepo.HardDelete(projectDto.ToModel());
 
             return await _projectRepo.SaveChangesAsync() > 0;
         }
@@ -66,6 +84,18 @@ namespace CyrusTask.Services.Projects
         {
             var spec = new ProjectForCountSpecification();
             return await  _projectRepo.GetCountAsync(spec);
+        }
+
+        public async Task<Project?> GetProjectByIdTracked(int id)
+        {
+            return await _projectRepo.GetByIdAsync(id);
+        }
+
+        public async Task<bool> HardDeleteProject(Project project)
+        {
+            _projectRepo.HardDelete(project);
+
+            return await _projectRepo.SaveChangesAsync() > 0;
         }
     }
 }

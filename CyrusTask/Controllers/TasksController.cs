@@ -209,5 +209,33 @@ namespace CyrusTask.Controllers
 
         }
 
+        [HttpDelete("{id:int}/hard")]
+        public async Task<IActionResult> DeleteHardTask(int id)
+        {
+            try
+            {
+                var task = await _taskService.GetProjectById(id);
+
+                if (task == null)
+                {
+                    return NotFound("Task not found.");
+                }
+
+                bool isDeleted = await _taskService.DeleteHardTask(task);
+
+                if (!isDeleted)
+                {
+                    return StatusCode(500, "Failed to delete the task.");
+                }
+
+                return Ok("Task deleted successfully.");
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while deleting the task.");
+            }
+
+        }
+
     }
 }
