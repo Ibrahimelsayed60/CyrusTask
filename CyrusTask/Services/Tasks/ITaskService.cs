@@ -1,6 +1,7 @@
 ﻿using CyrusTask.DTOs.Projects;
 using CyrusTask.DTOs.TaskItems;
 using CyrusTask.Models;
+using CyrusTask.Specifications.ProjectSpecs;
 using CyrusTask.Specifications.TaskSpecs;
 
 namespace CyrusTask.Services.Tasks
@@ -8,7 +9,7 @@ namespace CyrusTask.Services.Tasks
     public interface ITaskService
     {
 
-        Task<IEnumerable<TaskItemDto>> GetAllProject();
+        Task<IEnumerable<TaskItemDto>> GetAllTasks();
 
         Task<TaskItem?> GetProjectById(int id);
 
@@ -19,6 +20,8 @@ namespace CyrusTask.Services.Tasks
         Task<TaskItemDto> AssignTaskToUser(int TaskId, int UserId);
 
         Task<IEnumerable<TaskItemDto>> FilterTasksByProjectAndUser(TaskSpecParams spec);
+
+        Task<int> GetCountAsync(TaskSpecParams specParams);
 
         Task<bool> DeleteTask(TaskItem taskItem);
 

@@ -1,11 +1,7 @@
 ﻿namespace CyrusTask.Specifications.TaskSpecs
 {
-    public class TaskSpecParams
+    public class TaskPaginationParams
     {
-        public int ProjectId { get; set; }
-
-        public int UserId { get; set; }
-
         private const int MaxPageSize = 10;
 
         public string? Sort { get; set; }
@@ -19,6 +15,5 @@
         }
 
         public int PageIndex { get; set; } = 1;
-
     }
 }

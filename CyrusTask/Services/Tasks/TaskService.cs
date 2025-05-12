@@ -18,7 +18,7 @@ namespace CyrusTask.Services.Tasks
 
         
 
-        public async Task<IEnumerable<TaskItemDto>> GetAllProject()
+        public async Task<IEnumerable<TaskItemDto>> GetAllTasks()
         {
             var tasks = (await _taskRepo.GetAllAsync()).ToDtos();
             return tasks;
@@ -84,9 +84,16 @@ namespace CyrusTask.Services.Tasks
 
         public async Task<IEnumerable<TaskItemDto>> FilterTasksByProjectAndUser(TaskSpecParams spec)
         {
-            var tasks = await _taskRepo.GetAllWithExpresion(t => t.ProjectId == spec.ProjectId && t.AssignedUserId == spec.UserId);
-
+            var taskSpec = new TaskFilterAndPaginationSpecifications(spec);
+            var tasks = _taskRepo.GetAllWithSpec(taskSpec);
             return tasks.ToDtos();
+        }
+
+        public async Task<int> GetCountAsync(TaskSpecParams specParams)
+        {
+            var spec = new TaskForCountSpecification(specParams);
+
+            return await _taskRepo.GetCountAsync(spec);
         }
     }
 }

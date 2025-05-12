@@ -26,59 +26,132 @@ namespace CyrusTask.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllProjects([FromQuery] ProjectSpecParams specParams)
         {
-            var projects= await _projectService.GetAllProject(specParams);
 
-            var count = await _projectService.GetCountAsync(specParams);
+            // Validate specParams
+            if (specParams.PageIndex <= 0)
+                return BadRequest("Page index must be greater than 0.");
+            
 
-            return Ok(new Pagination<ProjectDto>(specParams.PageIndex, specParams.PageSize, count, projects));
+            try
+            {
+                var projects = await _projectService.GetAllProject(specParams);
+
+                var count = await _projectService.GetCountAsync(specParams);
+
+                return Ok(new Pagination<ProjectDto>(specParams.PageIndex, specParams.PageSize, count, projects));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while fetching the projects.");
+            }
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetProjectById(int id)
         {
-            var project = await _projectService.GetProjectById(id);
 
-            return Ok(project);
+            if (id <= 0)
+                return BadRequest("Invalid project ID.");
+
+            try
+            {
+                var project = await _projectService.GetProjectById(id);
+
+                if (project == null)
+                    return NotFound("Project not found.");
+
+                return Ok(project);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while fetching the projects.");
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProject(ProjectCreateDto projectCreateDto)
+        public async Task<IActionResult> CreateProject([FromBody] ProjectCreateDto projectCreateDto)
         {
+
+            if (projectCreateDto == null)
+                return BadRequest("Project data is required.");
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            
+            try
+            {
+                var projectCreated = await _projectService.CreateProject(projectCreateDto);
 
-            var projectCreated =await _projectService.CreateProject(projectCreateDto);
-            return Ok(projectCreated);
+                if (projectCreated == null)
+                    return StatusCode(500, "Failed to create project.");
+
+                return Ok(projectCreated);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while Creating the projects.");
+            }
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateProject(int id, ProjectCreateDto projectCreateDto)
+        public async Task<IActionResult> UpdateProject(int id, [FromBody] ProjectCreateDto projectCreateDto)
         {
-            bool isExisted = _projectService.isExist(id);
-            if (!isExisted)
+            if (id <= 0)
+                return BadRequest("Invalid project ID.");
+
+            if (projectCreateDto == null)
+                return BadRequest("Project data is required.");
+
+            try
             {
-                return BadRequest("Project no found");
+                bool isExisted = _projectService.isExist(id);
+                if (!isExisted)
+                {
+                    return NotFound("Project no found");
+                }
+
+                var updatedProject = await _projectService.UpdateProject(id, projectCreateDto);
+
+                if (updatedProject == null)
+                    return StatusCode(500, "Failed to update the project.");
+
+                return Ok(updatedProject);
             }
-
-            var project = await _projectService.UpdateProject(id, projectCreateDto);
-
-            return Ok(project);
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while updating the project.");
+            }
 
         }
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteProject(int id)
         {
-            var project = await _projectService.GetProjectById(id);
 
-            bool isDeleted = await _projectService.DeleteProject(project);
+            if (id <= 0)
+                return BadRequest("Invalid project ID.");
 
-            return Ok(new
+            try
             {
-                isDeleted = isDeleted
-            });
+                var project = await _projectService.GetProjectById(id);
+
+                if (project == null)
+                    return NotFound("Project not found.");
+
+                bool isDeleted = await _projectService.DeleteProject(project);
+
+                if (!isDeleted)
+                    return StatusCode(500, "Failed to delete the project.");
+
+                return Ok(new
+                {
+                    isDeleted = isDeleted
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while deleting the project.");
+            }
         }
 
     }

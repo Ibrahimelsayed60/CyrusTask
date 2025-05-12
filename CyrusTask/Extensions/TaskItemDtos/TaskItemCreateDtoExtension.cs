@@ -15,7 +15,9 @@ namespace CyrusTask.Extensions.TaskItemDtos
                 Description = taskItemCreateDto.Description,
                 Status = (TaskStatusEnum)Enum.Parse(typeof(TaskStatusEnum), taskItemCreateDto.Status),
                 CreatedAt = taskItemCreateDto.CreatedAt,
-                ProjectId = taskItemCreateDto.ProjectId
+                ProjectId = taskItemCreateDto.ProjectId,
+                AssignedUserId = taskItemCreateDto?.UserId
+                
             };
         }
 

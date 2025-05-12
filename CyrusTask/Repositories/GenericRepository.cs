@@ -82,5 +82,10 @@ namespace CyrusTask.Repositories
         {
             return ApplySpecifications(spec);
         }
+
+        public void HardDelete(T entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
