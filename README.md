@@ -21,7 +21,6 @@ A clean and structured **ASP.NET 8 Web API** project developed as part of a tech
 - ASP.NET 8 Web API
 - SQL Server
 - Entity Framework Core 
-- 3-Tiers Architecture
 - JWT Authentication 
 - C#
 - RESTful API principles
