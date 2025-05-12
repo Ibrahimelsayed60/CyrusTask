@@ -1,0 +1,357 @@
+{
+	"info": {
+		"_postman_id": "c5e74b63-7788-46b0-8ccb-89533a3395cc",
+		"name": "Cyrus project Management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "18818837"
+	},
+	"item": [
+		{
+			"name": "Project",
+			"item": [
+				{
+					"name": "Pagination",
+					"item": [
+						{
+							"name": "Get Page one of projects",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{localhost}}/api/Projects?PageSize=11&PageIndex=1",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"Projects"
+									],
+									"query": [
+										{
+											"key": "PageSize",
+											"value": "11"
+										},
+										{
+											"key": "PageIndex",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Projects sorted by startDate Desc",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{localhost}}/api/Projects?Sort=StartDateDesc",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"Projects"
+									],
+									"query": [
+										{
+											"key": "Sort",
+											"value": "StartDateDesc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Projects sorted by startDate Asc",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{localhost}}/api/Projects?Sort=StartDateAsc",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"Projects"
+									],
+									"query": [
+										{
+											"key": "Sort",
+											"value": "StartDateAsc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Projects sorted by Name",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{localhost}}/api/Projects"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get All Projects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{localhost}}/api/Projects"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Project By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{localhost}}/api/Projects/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Project",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Refactor Parts\",\r\n    \"description\": \"Refactor code to use services\",\r\n    \"startDate\": \"2025-03-01T08:00:00.000Z\",\r\n    \"endDate\": \"2025-05-30T17:00:00.000Z\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{localhost}}/api/Projects/"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Project",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Refactor Partssss\",\r\n    \"description\": \"Refactor code to use services\",\r\n    \"startDate\": \"2025-03-01T08:00:00.000Z\",\r\n    \"endDate\": \"2025-05-30T17:00:00.000Z\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{localhost}}/api/Projects/27"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Project",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{localhost}}/api/Projects/27"
+					},
+					"response": []
+				},
+				{
+					"name": "Hard Delete Project",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{localhost}}/api/Projects/26/hard"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Task Item",
+			"item": [
+				{
+					"name": "Create Task",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Monitoring and abservalability\",\r\n    \"description\": \"Deploy the integration to production and monitor system logs, user activities, and error handling.\",\r\n    \"status\": \"InProgress\",\r\n    \"createdAt\": \"2025-05-17T16:00:00.000Z\",\r\n  \"projectId\": 19\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{localhost}}/api/Tasks"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{localhost}}/api/Tasks/34"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"updatedStatus\": \"InProgress\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{localhost}}/api/Tasks/34/status"
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Task to user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "{{localhost}}/api/Tasks/8/assign"
+					},
+					"response": []
+				},
+				{
+					"name": "Get task for project and user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/api/Tasks?projectId=1&userId=1",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"Tasks"
+							],
+							"query": [
+								{
+									"key": "projectId",
+									"value": "1"
+								},
+								{
+									"key": "userId",
+									"value": "1"
+								},
+								{
+									"key": "PageIndex",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hard Delete Task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{localhost}}/api/Tasks/35/hard"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fullName\": \"Mohamed Fathy\",\r\n  \"email\": \"fathy@gmail.com\",\r\n  \"password\": \"Pa$$w0rd\",\r\n  \"confirmPassword\": \"Pa$$w0rd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{localhost}}/api/Users"
+					},
+					"response": []
+				},
+				{
+					"name": "login user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"hemasayed600@gmail.com\",\r\n  \"password\": \"Pa$$w0rd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{localhost}}/api/Users/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{localhost}}/api/Users"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "localhost",
+			"value": "https://localhost:7125",
+			"type": "string"
+		}
+	]
+}
